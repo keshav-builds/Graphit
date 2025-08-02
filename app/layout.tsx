@@ -9,7 +9,20 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Graphit",
   description: "Interactive Data Visualization Platform",
-    generator: 'keshav.dev'
+    generator: 'keshav.dev',
+      icons: {
+    icon: "/favicon.png",
+  
+  },
+    openGraph: {
+    title: "Graphit - Interactive Data Visualization Platform",
+    description: "Explore, visualize, and analyze your data with Graphit, built on Next.js and React.",
+    url: "https://graphit-eta.vercel.app/", 
+    siteName: "Graphit",
+    locale: "en_US",
+    type: "website",
+  },
+  
 }
 
 export default function RootLayout({
@@ -19,6 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}

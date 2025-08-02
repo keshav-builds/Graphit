@@ -1,9 +1,18 @@
-# 📊 DataViz Pro - Advanced Interactive Data Visualization Platform
+# 📊 Graphit - Advanced Interactive Data Visualization Platform
 
 A modern, responsive web application built with **Next.js 14**, **React**, and **TypeScript** that transforms raw data into beautiful, interactive visualizations. Perfect for data analysts, business professionals, and anyone who needs to quickly explore and understand their data.
 
-![DataViz Pro Screenshot](https://via.placeholder.com/800x400/6366F1/FFFFFF?text=DataViz+Pro+Dashboard)
+## 🎥 Demo
 
+### Screenshot 1: Data Visualization Dashboard  
+![Data Visualization Dashboard](public/graphit1.png)
+
+### Screenshot 2: Interactive Table View  
+![Interactive Table View](public/graphit2.png)
+
+**Live Demo**: [graphit](https://graphit-eta.vercel.app/)
+
+---
 ## ✨ Features
 
 ### 🎯 **Core Functionality**
@@ -36,30 +45,6 @@ A modern, responsive web application built with **Next.js 14**, **React**, and *
 - Node.js 18+ 
 - npm or yarn package manager
 
-### Installation
-
-1. **Clone the repository**
-   \`\`\`bash
-   git clone https://github.com/yourusername/dataviz-pro.git
-   cd dataviz-pro
-   \`\`\`
-
-2. **Install dependencies**
-   \`\`\`bash
-   npm install
-   # or
-   yarn install
-   \`\`\`
-
-3. **Run the development server**
-   \`\`\`bash
-   npm run dev
-   # or
-   yarn dev
-   \`\`\`
-
-4. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
 
 ## 📁 Project Structure
 
@@ -187,19 +172,6 @@ Key responsive features:
 - Touch-friendly interactions
 - Optimized chart sizing
 
-## 🚀 Deployment
-
-### **Vercel (Recommended)**
-\`\`\`bash
-npm install -g vercel
-vercel
-\`\`\`
-
-### **Netlify**
-\`\`\`bash
-npm run build
-# Upload dist folder to Netlify
-\`\`\`
 
 ### **Docker**
 \`\`\`dockerfile
