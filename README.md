@@ -48,9 +48,8 @@ A modern, responsive web application built with **Next.js 14**, **React**, and *
 
 ## 📁 Project Structure
 
-\`\`\`
-
-dataviz-pro/
+```
+Graphit/
 ├── app/                    # Next.js 14 App Router
 │   ├── globals.css        # Global styles and theme variables
 │   ├── layout.tsx         # Root layout with theme provider
@@ -62,8 +61,7 @@ dataviz-pro/
 │   └── theme-toggle.tsx   # Theme switching component
 ├── public/                # Static assets
 └── README.md             # Project documentation
-
-\`\`\`
+```
 
 ## 🛠️ Built With
 
