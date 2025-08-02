@@ -1,0 +1,50 @@
+[
+  {
+    "company": "Reliance Industries",
+    "sector": "Oil & Gas",
+    "revenue_in_cr": 870000,
+    "employees": 236000,
+    "founded": 1973,
+    "headquarters": "Mumbai"
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "sector": "IT Services",
+    "revenue_in_cr": 254000,
+    "employees": 528000,
+    "founded": 1968,
+    "headquarters": "Mumbai"
+  },
+  {
+    "company": "Infosys",
+    "sector": "IT Services",
+    "revenue_in_cr": 168000,
+    "employees": 314000,
+    "founded": 1981,
+    "headquarters": "Bengaluru"
+  },
+  {
+    "company": "HDFC Bank",
+    "sector": "Banking",
+    "revenue_in_cr": 179000,
+    "employees": 177000,
+    "founded": 1994,
+    "headquarters": "Mumbai"
+  },
+  {
+    "company": "Wipro",
+    "sector": "IT Services",
+    "revenue_in_cr": 105000,
+    "employees": 250000,
+    "founded": 1945,
+    "headquarters": "Bengaluru"
+  },
+  {
+    "company": "HCL Technologies",
+    "sector": "IT Services",
+    "revenue_in_cr": 120000,
+    "employees": 210000,
+    "founded": 1976,
+    "headquarters": "Noida"
+  }
+]

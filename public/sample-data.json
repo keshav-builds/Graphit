@@ -1,0 +1,102 @@
+[
+  {
+    "title": "The Shawshank Redemption",
+    "genre": "Drama",
+    "rating": 9.3,
+    "year": 1994,
+    "director": "Frank Darabont",
+    "budget": 25000000,
+    "boxOffice": 16000000,
+    "country": "USA"
+  },
+  {
+    "title": "The Godfather",
+    "genre": "Crime",
+    "rating": 9.2,
+    "year": 1972,
+    "director": "Francis Ford Coppola",
+    "budget": 6000000,
+    "boxOffice": 245000000,
+    "country": "USA"
+  },
+  {
+    "title": "The Dark Knight",
+    "genre": "Action",
+    "rating": 9.0,
+    "year": 2008,
+    "director": "Christopher Nolan",
+    "budget": 185000000,
+    "boxOffice": 1004000000,
+    "country": "USA"
+  },
+  {
+    "title": "Pulp Fiction",
+    "genre": "Crime",
+    "rating": 8.9,
+    "year": 1994,
+    "director": "Quentin Tarantino",
+    "budget": 8000000,
+    "boxOffice": 214000000,
+    "country": "USA"
+  },
+  {
+    "title": "Spirited Away",
+    "genre": "Animation",
+    "rating": 8.6,
+    "year": 2001,
+    "director": "Hayao Miyazaki",
+    "budget": 19000000,
+    "boxOffice": 395000000,
+    "country": "Japan"
+  },
+  {
+    "title": "Parasite",
+    "genre": "Thriller",
+    "rating": 8.5,
+    "year": 2019,
+    "director": "Bong Joon-ho",
+    "budget": 11400000,
+    "boxOffice": 258000000,
+    "country": "South Korea"
+  },
+  {
+    "title": "Interstellar",
+    "genre": "Sci-Fi",
+    "rating": 8.6,
+    "year": 2014,
+    "director": "Christopher Nolan",
+    "budget": 165000000,
+    "boxOffice": 701000000,
+    "country": "USA"
+  },
+  {
+    "title": "Inception",
+    "genre": "Sci-Fi",
+    "rating": 8.8,
+    "year": 2010,
+    "director": "Christopher Nolan",
+    "budget": 160000000,
+    "boxOffice": 836000000,
+    "country": "USA"
+  },
+  {
+    "title": "Avengers: Endgame",
+    "genre": "Action",
+    "rating": 8.4,
+    "year": 2019,
+    "director": "Anthony Russo",
+    "budget": 356000000,
+    "boxOffice": 2798000000,
+    "country": "USA"
+  },
+  {
+    "title": "Joker",
+    "genre": "Crime",
+    "rating": 8.4,
+    "year": 2019,
+    "director": "Todd Phillips",
+    "budget": 55000000,
+    "boxOffice": 1074000000,
+    "country": "USA"
+  }
+]

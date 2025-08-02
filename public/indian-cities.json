@@ -1,0 +1,66 @@
+[
+  {
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "population_in_lakhs": 204.11,
+    "area_sq_km": 603,
+    "gdp_billion_usd": 310,
+    "region": "West"
+  },
+  {
+    "city": "Delhi",
+    "state": "Delhi",
+    "population_in_lakhs": 329.0,
+    "area_sq_km": 1484,
+    "gdp_billion_usd": 293.7,
+    "region": "North"
+  },
+  {
+    "city": "Bengaluru",
+    "state": "Karnataka",
+    "population_in_lakhs": 132.0,
+    "area_sq_km": 741,
+    "gdp_billion_usd": 110,
+    "region": "South"
+  },
+  {
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "population_in_lakhs": 105.0,
+    "area_sq_km": 650,
+    "gdp_billion_usd": 74,
+    "region": "South"
+  },
+  {
+    "city": "Chennai",
+    "state": "Tamil Nadu",
+    "population_in_lakhs": 115.0,
+    "area_sq_km": 1189,
+    "gdp_billion_usd": 78,
+    "region": "South"
+  },
+  {
+    "city": "Kolkata",
+    "state": "West Bengal",
+    "population_in_lakhs": 157.0,
+    "area_sq_km": 1886,
+    "gdp_billion_usd": 60,
+    "region": "East"
+  },
+  {
+    "city": "Pune",
+    "state": "Maharashtra",
+    "population_in_lakhs": 74.0,
+    "area_sq_km": 729,
+    "gdp_billion_usd": 69,
+    "region": "West"
+  },
+  {
+    "city": "Ahmedabad",
+    "state": "Gujarat",
+    "population_in_lakhs": 84.0,
+    "area_sq_km": 505,
+    "gdp_billion_usd": 68,
+    "region": "West"
+  }
+]

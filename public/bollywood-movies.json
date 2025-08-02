@@ -1,0 +1,102 @@
+[
+  {
+    "title": "Dangal",
+    "genre": "Drama",
+    "rating": 8.4,
+    "year": 2016,
+    "director": "Nitesh Tiwari",
+    "budget_in_cr": 70,
+    "box_office_in_cr": 2023,
+    "language": "Hindi"
+  },
+  {
+    "title": "3 Idiots",
+    "genre": "Comedy",
+    "rating": 8.4,
+    "year": 2009,
+    "director": "Rajkumar Hirani",
+    "budget_in_cr": 55,
+    "box_office_in_cr": 402,
+    "language": "Hindi"
+  },
+  {
+    "title": "Baahubali 2",
+    "genre": "Action",
+    "rating": 8.2,
+    "year": 2017,
+    "director": "S.S. Rajamouli",
+    "budget_in_cr": 250,
+    "box_office_in_cr": 1800,
+    "language": "Telugu"
+  },
+  {
+    "title": "Lagaan",
+    "genre": "Drama",
+    "rating": 8.1,
+    "year": 2001,
+    "director": "Ashutosh Gowariker",
+    "budget_in_cr": 25,
+    "box_office_in_cr": 65,
+    "language": "Hindi"
+  },
+  {
+    "title": "Zindagi Na Milegi Dobara",
+    "genre": "Adventure",
+    "rating": 8.2,
+    "year": 2011,
+    "director": "Zoya Akhtar",
+    "budget_in_cr": 65,
+    "box_office_in_cr": 153,
+    "language": "Hindi"
+  },
+  {
+    "title": "Queen",
+    "genre": "Comedy",
+    "rating": 8.2,
+    "year": 2013,
+    "director": "Vikas Bahl",
+    "budget_in_cr": 11,
+    "box_office_in_cr": 61,
+    "language": "Hindi"
+  },
+  {
+    "title": "Tumhari Sulu",
+    "genre": "Comedy",
+    "rating": 7.1,
+    "year": 2017,
+    "director": "Suresh Triveni",
+    "budget_in_cr": 20,
+    "box_office_in_cr": 52,
+    "language": "Hindi"
+  },
+  {
+    "title": "Pink",
+    "genre": "Drama",
+    "rating": 8.1,
+    "year": 2016,
+    "director": "Aniruddha Roy Chowdhury",
+    "budget_in_cr": 30,
+    "box_office_in_cr": 65,
+    "language": "Hindi"
+  },
+  {
+    "title": "Andhadhun",
+    "genre": "Thriller",
+    "rating": 8.2,
+    "year": 2018,
+    "director": "Sriram Raghavan",
+    "budget_in_cr": 32,
+    "box_office_in_cr": 110,
+    "language": "Hindi"
+  },
+  {
+    "title": "Gully Boy",
+    "genre": "Drama",
+    "rating": 7.9,
+    "year": 2019,
+    "director": "Zoya Akhtar",
+    "budget_in_cr": 65,
+    "box_office_in_cr": 238,
+    "language": "Hindi"
+  }
+]
