@@ -314,7 +314,7 @@ export function DataExplorer() {
   const [searchTerm, setSearchTerm] = useState("")
   const [sortColumn, setSortColumn] = useState("")
   const [sortDirection, setSortDirection] = useState("asc")
-  const [chartType, setChartType] = useState("bar")
+  const [chartType, setChartType] = useState("pie")
   const [xAxis, setXAxis] = useState("")
   const [yAxis, setYAxis] = useState("")
   const [selectedRow, setSelectedRow] = useState(null)
@@ -567,14 +567,14 @@ export function DataExplorer() {
       margin: { top: 20, right: 30, left: 20, bottom: 5 },
     }
 
-    const tooltipContentStyle = {
-      backgroundColor: "hsl(var(--card))",
-      border: "1px solid hsl(var(--border))",
-      borderRadius: "8px",
-      color: "hsl(var(--foreground))",
-      padding: "12px",
-      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-    }
+  const tooltipContentStyle = {
+  backgroundColor: "#fff",    // White background
+  border: "1px solid #eee",
+  borderRadius: "8px",
+  color: "#333",              // Dark, visible text
+  padding: "12px",
+  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+}
 
     switch (chartType) {
       case "bar":

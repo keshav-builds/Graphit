@@ -10,7 +10,7 @@ A modern, responsive web application built with **Next.js 14**, **React**, and *
 ### Screenshot 2: Interactive Table View  
 ![Interactive Table View](public/graphit2.png)
 
-**Live Demo**: [graphit](https://graphit-eta.vercel.app/)
+### **Live Demo**: [graphit](https://graphit-eta.vercel.app/)
 
 ---
 ## ✨ Features
@@ -49,6 +49,7 @@ A modern, responsive web application built with **Next.js 14**, **React**, and *
 ## 📁 Project Structure
 
 \`\`\`
+
 dataviz-pro/
 ├── app/                    # Next.js 14 App Router
 │   ├── globals.css        # Global styles and theme variables
@@ -61,6 +62,7 @@ dataviz-pro/
 │   └── theme-toggle.tsx   # Theme switching component
 ├── public/                # Static assets
 └── README.md             # Project documentation
+
 \`\`\`
 
 ## 🛠️ Built With
@@ -171,48 +173,6 @@ Key responsive features:
 - Adaptive grid layouts
 - Touch-friendly interactions
 - Optimized chart sizing
-
-
-### **Docker**
-\`\`\`dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-\`\`\`
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the project
-2. Create your feature branch (\`git checkout -b feature/AmazingFeature\`)
-3. Commit your changes (\`git commit -m 'Add some AmazingFeature'\`)
-4. Push to the branch (\`git push origin feature/AmazingFeature\`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **[Shadcn](https://twitter.com/shadcn)** for the amazing UI component library
-- **[Recharts Team](https://github.com/recharts/recharts)** for the excellent charting library
-- **[Vercel](https://vercel.com/)** for the fantastic deployment platform
-- **[Tailwind CSS](https://tailwindcss.com/)** for the utility-first CSS framework
-
-## 📞 Contact
-
-**Your Name** - [your.email@example.com](mailto:your.email@example.com)
-
-**Project Link**: [https://github.com/yourusername/dataviz-pro](https://github.com/yourusername/dataviz-pro)
-
-**Live Demo**: [https://dataviz-pro.vercel.app](https://dataviz-pro.vercel.app)
 
 ---
 
