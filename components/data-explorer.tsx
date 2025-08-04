@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import ColourfulText from "@/components/ui/colourful-text";
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -314,13 +315,14 @@ export function DataExplorer() {
   const [searchTerm, setSearchTerm] = useState("")
   const [sortColumn, setSortColumn] = useState("")
   const [sortDirection, setSortDirection] = useState("asc")
-  const [chartType, setChartType] = useState("pie")
+  const [chartType, setChartType] = useState("area")
   const [xAxis, setXAxis] = useState("")
   const [yAxis, setYAxis] = useState("")
   const [selectedRow, setSelectedRow] = useState(null)
-  const [currentDataset, setCurrentDataset] = useState("Bollywood Movies")
+  const [currentDataset, setCurrentDataset] = useState("Indian Cities")
   const [isLoading, setIsLoading] = useState(false)
 
+  
   const loadSampleData = (sampleData, datasetName) => {
     setIsLoading(true)
     try {
@@ -351,7 +353,7 @@ export function DataExplorer() {
   }
 
   useEffect(() => {
-    loadSampleData(BOLLYWOOD_MOVIES, "Bollywood Movies")
+    loadSampleData(INDIAN_CITIES, "Indian Cities")
   }, [])
 
   useEffect(() => {
@@ -711,8 +713,8 @@ export function DataExplorer() {
             <div className="p-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg">
               <Sparkles className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Graphit
+            <h1 className="text-4xl md:text-5xl font-bold   bg-clip-text text-transparent">
+               <ColourfulText text="Graphit" />
             </h1>
           </div>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -738,7 +740,7 @@ export function DataExplorer() {
         <Card className="glass-card">
           <CardHeader className="pb-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <CardTitle className="text-xl md:text-2xl text-foreground flex items-center gap-2">
+              <CardTitle className="text-2xl  text-foreground flex items-center gap-2 ">
                 <Settings className="h-5 w-5 md:h-6 md:w-6 text-indigo-500" />
                 Control Panel
               </CardTitle>
@@ -781,29 +783,13 @@ export function DataExplorer() {
                     )
                   })}
                 </div>
-                <Separator className="bg-border" />
-                <div className="space-y-3">
-                  <Label htmlFor="file-upload" className="text-foreground font-medium flex items-center gap-2">
-                    <Upload className="h-4 w-4 text-muted-foreground" />
-                    Upload Your Data
-                  </Label>
-                  <Input
-                    id="file-upload"
-                    type="file"
-                    accept=".csv,.json"
-                    onChange={handleFileUpload}
-                    className="glass-input file:bg-indigo-500 file:text-white file:border-none file:rounded-md file:hover:bg-indigo-600 file:transition-colors file:px-4 file:py-2"
-                  />
-                  <div className="text-sm text-muted-foreground space-y-1">
-                    <p>• Supported formats: CSV, JSON</p>
-                    <p>• Max file size: 10MB</p>
-                  </div>
-                </div>
+              
+                
               </div>
 
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <Label className="text-foreground font-medium flex items-center gap-2">
+                  <Label className="text-foreground font-medium flex items-center gap-2 text-3xl">
                     <Search className="h-4 w-4 text-muted-foreground" />
                     Search & Filter
                   </Label>
@@ -820,6 +806,25 @@ export function DataExplorer() {
                     </div>
                   )}
                 </div>
+                {/* {upload data box} */}
+<div className="space-y-3 ">
+                  <Label htmlFor="file-upload" className="text-foreground text-xl font-medium  flex items-center gap-2 mt-10">
+                    <Upload className="h-4 w-4   text-3xl font-bold" />
+                    Upload Your Data
+                  </Label>
+                  <Input
+                    id="file-upload"
+                    type="file"
+                    accept=".csv,.json"
+                    onChange={handleFileUpload}
+                    className="glass-input file:bg-indigo-500 file:text-white file:border-none file:rounded-md file:hover:bg-indigo-600 file:transition-colors file:px-4 file:py-2"
+                  />
+                  <div className="text-sm text-muted-foreground space-y-1">
+                    <p>• Supported formats: CSV, JSON</p>
+                    <p>• Max file size: 10MB</p>
+                  </div>
+                </div>
+
               </div>
 
               {/* Quick Stats Panel */}
