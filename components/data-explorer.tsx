@@ -710,7 +710,7 @@ export function DataExplorer() {
         {/* Header */}
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
-            <div className="p-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+            <div className="p-3 bg-purple-600 rounded-xl shadow-lg">
               <Sparkles className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold   bg-clip-text text-transparent">
@@ -789,7 +789,7 @@ export function DataExplorer() {
 
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <Label className="text-foreground font-medium flex items-center gap-2 text-3xl">
+                  <Label className="text-foreground font-medium flex items-center gap-2 text-xl">
                     <Search className="h-4 w-4 text-muted-foreground" />
                     Search & Filter
                   </Label>
