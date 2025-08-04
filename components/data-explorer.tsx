@@ -1,17 +1,41 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useMemo } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { useState, useEffect, useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import ColourfulText from "@/components/ui/colourful-text";
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import {
   BarChart,
   Bar,
@@ -30,7 +54,7 @@ import {
   Scatter,
   AreaChart,
   Area,
-} from "recharts"
+} from "recharts";
 import {
   Upload,
   Download,
@@ -50,7 +74,7 @@ import {
   Info,
   FileText,
   BarChart4,
-} from "lucide-react"
+} from "lucide-react";
 
 const CHART_COLORS = [
   "#6366F1", // Indigo
@@ -63,7 +87,7 @@ const CHART_COLORS = [
   "#F97316", // Orange
   "#EC4899", // Pink
   "#14B8A6", // Teal
-]
+];
 
 // Sample datasets embedded directly
 const BOLLYWOOD_MOVIES = [
@@ -167,7 +191,7 @@ const BOLLYWOOD_MOVIES = [
     collection_cr: 238,
     language: "Hindi",
   },
-]
+];
 
 const INDIAN_CITIES = [
   {
@@ -234,7 +258,7 @@ const INDIAN_CITIES = [
     gdp_billion: 68,
     region: "West",
   },
-]
+];
 
 const INDIAN_COMPANIES = [
   {
@@ -285,7 +309,7 @@ const INDIAN_COMPANIES = [
     founded: 1976,
     headquarters: "Noida",
   },
-]
+];
 
 const SAMPLE_DATASETS = [
   {
@@ -306,211 +330,230 @@ const SAMPLE_DATASETS = [
     description: "revenue and employee data",
     icon: TrendingUp,
   },
-]
+];
 
 export function DataExplorer() {
-  const [data, setData] = useState([])
-  const [filteredData, setFilteredData] = useState([])
-  const [columns, setColumns] = useState([])
-  const [searchTerm, setSearchTerm] = useState("")
-  const [sortColumn, setSortColumn] = useState("")
-  const [sortDirection, setSortDirection] = useState("asc")
-  const [chartType, setChartType] = useState("area")
-  const [xAxis, setXAxis] = useState("")
-  const [yAxis, setYAxis] = useState("")
-  const [selectedRow, setSelectedRow] = useState(null)
-  const [currentDataset, setCurrentDataset] = useState("Indian Cities")
-  const [isLoading, setIsLoading] = useState(false)
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortColumn, setSortColumn] = useState("");
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [chartType, setChartType] = useState("area");
+  const [xAxis, setXAxis] = useState("");
+  const [yAxis, setYAxis] = useState("");
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [currentDataset, setCurrentDataset] = useState("Indian Cities");
+  const [isLoading, setIsLoading] = useState(false);
 
-  
   const loadSampleData = (sampleData, datasetName) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      setData(sampleData)
-      setFilteredData(sampleData)
-      setCurrentDataset(datasetName)
+      setData(sampleData);
+      setFilteredData(sampleData);
+      setCurrentDataset(datasetName);
 
       if (sampleData.length > 0) {
-        const cols = Object.keys(sampleData[0])
-        setColumns(cols)
+        const cols = Object.keys(sampleData[0]);
+        setColumns(cols);
 
         // Smart axis selection
-        const numericCols = cols.filter((col) => typeof sampleData[0][col] === "number")
-        const stringCols = cols.filter((col) => typeof sampleData[0][col] === "string")
+        const numericCols = cols.filter(
+          (col) => typeof sampleData[0][col] === "number"
+        );
+        const stringCols = cols.filter(
+          (col) => typeof sampleData[0][col] === "string"
+        );
 
-        setXAxis(stringCols[0] || cols[0])
-        setYAxis(numericCols[0] || cols[1])
+        setXAxis(stringCols[0] || cols[0]);
+        setYAxis(numericCols[0] || cols[1]);
       } else {
-        setColumns([])
-        setXAxis("")
-        setYAxis("")
+        setColumns([]);
+        setXAxis("");
+        setYAxis("");
       }
     } catch (error) {
-      console.error("Failed to load data:", error)
+      console.error("Failed to load data:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    loadSampleData(INDIAN_CITIES, "Indian Cities")
-  }, [])
+    loadSampleData(INDIAN_CITIES, "Indian Cities");
+  }, []);
 
   useEffect(() => {
-    let result = [...data]
+    let result = [...data];
 
     if (searchTerm) {
       result = result.filter((row) =>
-        Object.values(row).some((value) => String(value).toLowerCase().includes(searchTerm.toLowerCase())),
-      )
+        Object.values(row).some((value) =>
+          String(value).toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
     }
 
     if (sortColumn) {
       result.sort((a, b) => {
-        const aVal = a[sortColumn]
-        const bVal = b[sortColumn]
+        const aVal = a[sortColumn];
+        const bVal = b[sortColumn];
 
         if (typeof aVal === "number" && typeof bVal === "number") {
-          return sortDirection === "asc" ? aVal - bVal : bVal - aVal
+          return sortDirection === "asc" ? aVal - bVal : bVal - aVal;
         }
 
-        const aStr = String(aVal).toLowerCase()
-        const bStr = String(bVal).toLowerCase()
-        return sortDirection === "asc" ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr)
-      })
+        const aStr = String(aVal).toLowerCase();
+        const bStr = String(bVal).toLowerCase();
+        return sortDirection === "asc"
+          ? aStr.localeCompare(bStr)
+          : bStr.localeCompare(aStr);
+      });
     }
 
-    setFilteredData(result)
-  }, [data, searchTerm, sortColumn, sortDirection])
+    setFilteredData(result);
+  }, [data, searchTerm, sortColumn, sortDirection]);
 
   const chartData = useMemo(() => {
-    if (!xAxis || !yAxis || filteredData.length === 0) return []
+    if (!xAxis || !yAxis || filteredData.length === 0) return [];
 
     if (chartType === "pie") {
-      const counts = {}
+      const counts = {};
       filteredData.forEach((row) => {
-        const key = String(row[xAxis])
-        counts[key] = (counts[key] || 0) + 1
-      })
-      return Object.entries(counts).map(([name, value]) => ({ name, value }))
+        const key = String(row[xAxis]);
+        counts[key] = (counts[key] || 0) + 1;
+      });
+      return Object.entries(counts).map(([name, value]) => ({ name, value }));
     }
 
     if (chartType === "scatter") {
       return filteredData.map((row) => ({
         x: Number(row[xAxis]) || 0,
         y: Number(row[yAxis]) || 0,
-        name: row.title || row.company || row.city || `Item ${filteredData.indexOf(row) + 1}`,
-      }))
+        name:
+          row.title ||
+          row.company ||
+          row.city ||
+          `Item ${filteredData.indexOf(row) + 1}`,
+      }));
     }
 
     // For bar, line, area charts - aggregate data
-    const aggregated = {}
+    const aggregated = {};
     filteredData.forEach((row) => {
-      const xVal = String(row[xAxis])
-      const yVal = Number(row[yAxis]) || 0
+      const xVal = String(row[xAxis]);
+      const yVal = Number(row[yAxis]) || 0;
 
       if (!aggregated[xVal]) {
-        aggregated[xVal] = { sum: 0, count: 0 }
+        aggregated[xVal] = { sum: 0, count: 0 };
       }
-      aggregated[xVal].sum += yVal
-      aggregated[xVal].count += 1
-    })
+      aggregated[xVal].sum += yVal;
+      aggregated[xVal].count += 1;
+    });
 
     return Object.entries(aggregated).map(([name, { sum, count }]) => ({
       [xAxis]: name,
       [yAxis]: sum / count,
       total: sum,
-    }))
-  }, [filteredData, xAxis, yAxis, chartType])
+    }));
+  }, [filteredData, xAxis, yAxis, chartType]);
 
   const handleFileUpload = (event) => {
-    const file = event.target.files?.[0]
-    if (!file) return
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onload = (e) => {
       try {
-        const content = e.target.result
-        let parsedData = []
+        const content = e.target.result;
+        let parsedData = [];
 
         if (file.type === "application/json") {
-          parsedData = JSON.parse(content)
+          parsedData = JSON.parse(content);
         } else if (file.type === "text/csv") {
-          const lines = content.split("\n").filter((line) => line.trim())
-          const headers = lines[0].split(",").map((h) => h.trim())
+          const lines = content.split("\n").filter((line) => line.trim());
+          const headers = lines[0].split(",").map((h) => h.trim());
           parsedData = lines.slice(1).map((line) => {
-            const values = line.split(",").map((v) => v.trim())
-            const row = {}
+            const values = line.split(",").map((v) => v.trim());
+            const row = {};
             headers.forEach((header, index) => {
-              const val = values[index]
-              row[header] = isNaN(val) ? val : Number(val)
-            })
-            return row
-          })
+              const val = values[index];
+              row[header] = isNaN(val) ? val : Number(val);
+            });
+            return row;
+          });
         }
 
-        setData(parsedData)
-        setFilteredData(parsedData)
-        setColumns(Object.keys(parsedData[0] || {}))
-        setCurrentDataset(file.name)
+        setData(parsedData);
+        setFilteredData(parsedData);
+        setColumns(Object.keys(parsedData[0] || {}));
+        setCurrentDataset(file.name);
 
         // Auto-select axes
         if (parsedData.length > 0) {
-          const cols = Object.keys(parsedData[0])
-          const numericCols = cols.filter((col) => typeof parsedData[0][col] === "number")
-          const stringCols = cols.filter((col) => typeof parsedData[0][col] === "string")
+          const cols = Object.keys(parsedData[0]);
+          const numericCols = cols.filter(
+            (col) => typeof parsedData[0][col] === "number"
+          );
+          const stringCols = cols.filter(
+            (col) => typeof parsedData[0][col] === "string"
+          );
 
-          setXAxis(stringCols[0] || cols[0])
-          setYAxis(numericCols[0] || cols[1])
+          setXAxis(stringCols[0] || cols[0]);
+          setYAxis(numericCols[0] || cols[1]);
         } else {
-          setColumns([])
-          setXAxis("")
-          setYAxis("")
+          setColumns([]);
+          setXAxis("");
+          setYAxis("");
         }
       } catch (error) {
-        alert("Error parsing file. Please check the format.")
+        alert("Error parsing file. Please check the format.");
       }
-    }
-    reader.readAsText(file)
-  }
+    };
+    reader.readAsText(file);
+  };
 
   const handleSort = (column) => {
     if (sortColumn === column) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc")
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
-      setSortColumn(column)
-      setSortDirection("asc")
+      setSortColumn(column);
+      setSortDirection("asc");
     }
-  }
+  };
 
   const getColumnType = (column) => {
-    if (data.length === 0 || !data[0][column]) return "string"
-    return typeof data[0][column]
-  }
+    if (data.length === 0 || !data[0][column]) return "string";
+    return typeof data[0][column];
+  };
 
-  const numericColumns = columns.filter((col) => getColumnType(col) === "number")
+  const numericColumns = columns.filter(
+    (col) => getColumnType(col) === "number"
+  );
 
   const stats = useMemo(() => {
-    if (filteredData.length === 0) return {}
+    if (filteredData.length === 0) return {};
 
-    const result = {}
+    const result = {};
     numericColumns.forEach((col) => {
-      const values = filteredData.map((row) => Number(row[col])).filter((val) => !isNaN(val))
+      const values = filteredData
+        .map((row) => Number(row[col]))
+        .filter((val) => !isNaN(val));
       if (values.length > 0) {
         result[col] = {
           min: Math.min(...values),
           max: Math.max(...values),
           avg: values.reduce((a, b) => a + b, 0) / values.length,
           count: values.length,
-        }
+        };
       }
-    })
-    return result
-  }, [filteredData, columns])
+    });
+    return result;
+  }, [filteredData, columns]);
 
   // Data insights for the new section
   const dataInsights = useMemo(() => {
-    if (filteredData.length === 0) return null
+    if (filteredData.length === 0) return null;
 
     const insights = {
       totalRecords: filteredData.length,
@@ -520,36 +563,36 @@ export function DataExplorer() {
         complete: 0,
         missing: 0,
       },
-    }
+    };
 
     // Calculate unique values and top values for categorical columns
     columns.forEach((col) => {
       const values = filteredData
         .map((row) => row[col])
-        .filter((val) => val !== null && val !== undefined && val !== "")
-      const uniqueVals = [...new Set(values)]
-      insights.uniqueValues[col] = uniqueVals.length
+        .filter((val) => val !== null && val !== undefined && val !== "");
+      const uniqueVals = [...new Set(values)];
+      insights.uniqueValues[col] = uniqueVals.length;
 
       if (getColumnType(col) === "string" && uniqueVals.length <= 10) {
-        const counts = {}
+        const counts = {};
         values.forEach((val) => {
-          counts[val] = (counts[val] || 0) + 1
-        })
+          counts[val] = (counts[val] || 0) + 1;
+        });
         insights.topValues[col] = Object.entries(counts)
           .sort(([, a], [, b]) => b - a)
           .slice(0, 5)
-          .map(([value, count]) => ({ value, count }))
+          .map(([value, count]) => ({ value, count }));
       }
 
       // Data quality
-      const completeValues = values.length
-      const totalValues = filteredData.length
-      insights.dataQuality.complete += completeValues
-      insights.dataQuality.missing += totalValues - completeValues
-    })
+      const completeValues = values.length;
+      const totalValues = filteredData.length;
+      insights.dataQuality.complete += completeValues;
+      insights.dataQuality.missing += totalValues - completeValues;
+    });
 
-    return insights
-  }, [filteredData, columns])
+    return insights;
+  }, [filteredData, columns]);
 
   const renderChart = () => {
     if (chartData.length === 0 || !xAxis || !yAxis) {
@@ -558,25 +601,26 @@ export function DataExplorer() {
           <Database className="h-16 w-16 mb-4 text-muted-foreground/50" />
           <p className="text-lg font-medium">No data or axes selected</p>
           <p className="text-sm text-center max-w-md">
-            Please upload data or select X and Y axes in the Control Panel to generate visualizations.
+            Please upload data or select X and Y axes in the Control Panel to
+            generate visualizations.
           </p>
         </div>
-      )
+      );
     }
 
     const commonProps = {
       data: chartData,
       margin: { top: 20, right: 30, left: 20, bottom: 5 },
-    }
+    };
 
-  const tooltipContentStyle = {
-  backgroundColor: "#fff",    // White background
-  border: "1px solid #eee",
-  borderRadius: "8px",
-  color: "#333",              // Dark, visible text
-  padding: "12px",
-  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-}
+    const tooltipContentStyle = {
+      backgroundColor: "#fff", // White background
+      border: "1px solid #eee",
+      borderRadius: "8px",
+      color: "#333", // Dark, visible text
+      padding: "12px",
+      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+    };
 
     switch (chartType) {
       case "bar":
@@ -596,7 +640,7 @@ export function DataExplorer() {
             <Legend />
             <Bar dataKey={yAxis} fill={CHART_COLORS[0]} radius={[4, 4, 0, 0]} />
           </BarChart>
-        )
+        );
 
       case "line":
         return (
@@ -622,7 +666,7 @@ export function DataExplorer() {
               activeDot={{ r: 8, stroke: CHART_COLORS[1], strokeWidth: 2 }}
             />
           </LineChart>
-        )
+        );
 
       case "area":
         return (
@@ -649,12 +693,20 @@ export function DataExplorer() {
             />
             <defs>
               <linearGradient id="colorArea" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={CHART_COLORS[2]} stopOpacity={0.8} />
-                <stop offset="95%" stopColor={CHART_COLORS[2]} stopOpacity={0} />
+                <stop
+                  offset="5%"
+                  stopColor={CHART_COLORS[2]}
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor={CHART_COLORS[2]}
+                  stopOpacity={0}
+                />
               </linearGradient>
             </defs>
           </AreaChart>
-        )
+        );
 
       case "pie":
         return (
@@ -666,17 +718,22 @@ export function DataExplorer() {
               outerRadius={100}
               dataKey="value"
               nameKey="name"
-              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+              label={({ name, percent }) =>
+                `${name} ${(percent * 100).toFixed(0)}%`
+              }
               labelLine={false}
             >
               {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={CHART_COLORS[index % CHART_COLORS.length]}
+                />
               ))}
             </Pie>
             <RechartsTooltip contentStyle={tooltipContentStyle} />
             <Legend />
           </PieChart>
-        )
+        );
 
       case "scatter":
         return (
@@ -694,15 +751,18 @@ export function DataExplorer() {
               stroke="hsl(var(--muted-foreground))"
               tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
             />
-            <RechartsTooltip contentStyle={tooltipContentStyle} cursor={{ strokeDasharray: "3 3" }} />
+            <RechartsTooltip
+              contentStyle={tooltipContentStyle}
+              cursor={{ strokeDasharray: "3 3" }}
+            />
             <Scatter name="Data Points" dataKey="y" fill={CHART_COLORS[3]} />
           </ScatterChart>
-        )
+        );
 
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <div className="min-h-screen p-4 md:p-6 lg:p-8">
@@ -710,11 +770,11 @@ export function DataExplorer() {
         {/* Header */}
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
-            <div className="p-3 bg-purple-600 rounded-xl shadow-lg">
-              <Sparkles className="h-8 w-8 text-white" />
+            <div className="p-3  rounded-xl shadow-lg">
+              <img src="/favicon.png" className="h-10 w-10" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold   bg-clip-text text-transparent">
-               <ColourfulText text="Graphit" />
+              <ColourfulText text="Graphit" />
             </h1>
           </div>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -759,37 +819,45 @@ export function DataExplorer() {
                 </Label>
                 <div className="grid grid-cols-1 gap-3">
                   {SAMPLE_DATASETS.map((dataset) => {
-                    const IconComponent = dataset.icon
+                    const IconComponent = dataset.icon;
                     return (
                       <Button
                         key={dataset.name}
-                        variant={currentDataset === dataset.name ? "default" : "outline"}
+                        variant={
+                          currentDataset === dataset.name
+                            ? "default"
+                            : "outline"
+                        }
                         className={`justify-start text-left h-auto p-4 transition-all duration-200 ${
                           currentDataset === dataset.name
                             ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-lg"
                             : "hover:bg-accent/50 hover:shadow-md"
                         }`}
-                        onClick={() => loadSampleData(dataset.data, dataset.name)}
+                        onClick={() =>
+                          loadSampleData(dataset.data, dataset.name)
+                        }
                         disabled={isLoading}
                       >
                         <div className="flex items-start gap-3">
                           <IconComponent className="h-5 w-5 mt-0.5 flex-shrink-0" />
                           <div className="min-w-0">
-                            <div className="font-medium truncate">{dataset.name}</div>
-                            <div className="text-xs opacity-70 line-clamp-2">{dataset.description}</div>
+                            <div className="font-medium truncate">
+                              {dataset.name}
+                            </div>
+                            <div className="text-xs opacity-70 line-clamp-2">
+                              {dataset.description}
+                            </div>
                           </div>
                         </div>
                       </Button>
-                    )
+                    );
                   })}
                 </div>
-              
-                
               </div>
 
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <Label className="text-foreground font-medium flex items-center gap-2 text-xl">
+                  <Label className="text-foreground font-medium flex items-center gap-2 text-xl ">
                     <Search className="h-4 w-4 text-muted-foreground" />
                     Search & Filter
                   </Label>
@@ -801,16 +869,26 @@ export function DataExplorer() {
                   />
                   {searchTerm && (
                     <div className="text-sm text-muted-foreground bg-accent/20 p-2 rounded-md">
-                      Found <span className="font-medium text-foreground">{filteredData.length}</span> results for "
-                      <span className="font-medium text-foreground">{searchTerm}</span>"
+                      Found{" "}
+                      <span className="font-medium text-foreground">
+                        {filteredData.length}
+                      </span>{" "}
+                      results for "
+                      <span className="font-medium text-foreground">
+                        {searchTerm}
+                      </span>
+                      "
                     </div>
                   )}
                 </div>
                 {/* {upload data box} */}
-<div className="space-y-3 ">
-                  <Label htmlFor="file-upload" className="text-foreground text-xl font-medium  flex items-center gap-2 mt-10">
-                    <Upload className="h-4 w-4   text-3xl font-bold" />
-                    Upload Your Data
+                <div className="space-y-3 ">
+                  <Label
+                    htmlFor="file-upload"
+                    className="text-foreground text-xl font-medium  flex items-center gap-2  mt-10"
+                  >
+                    <Upload className="h-6 w-6 mr-1 text-3xl font-bold animate-bounce text-purple-600" />
+                     Upload Your Data
                   </Label>
                   <Input
                     id="file-upload"
@@ -824,7 +902,6 @@ export function DataExplorer() {
                     <p>• Max file size: 10MB</p>
                   </div>
                 </div>
-
               </div>
 
               {/* Quick Stats Panel */}
@@ -837,24 +914,38 @@ export function DataExplorer() {
                   <div className="space-y-3">
                     <div className="bg-gradient-to-r from-indigo-500/10 to-purple-600/10 p-3 rounded-lg border border-border/50">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-foreground">Active Dataset</span>
+                        <span className="text-sm font-medium text-foreground">
+                          Active Dataset
+                        </span>
                         <Badge className="bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300 text-xs">
                           {currentDataset}
                         </Badge>
                       </div>
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Records:</span>
-                          <span className="font-medium text-foreground">{filteredData.length}</span>
+                          <span className="text-muted-foreground">
+                            Records:
+                          </span>
+                          <span className="font-medium text-foreground">
+                            {filteredData.length}
+                          </span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Columns:</span>
-                          <span className="font-medium text-foreground">{columns.length}</span>
+                          <span className="text-muted-foreground">
+                            Columns:
+                          </span>
+                          <span className="font-medium text-foreground">
+                            {columns.length}
+                          </span>
                         </div>
                         {numericColumns.length > 0 && (
                           <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Numeric:</span>
-                            <span className="font-medium text-emerald-600">{numericColumns.length}</span>
+                            <span className="text-muted-foreground">
+                              Numeric:
+                            </span>
+                            <span className="font-medium text-emerald-600">
+                              {numericColumns.length}
+                            </span>
                           </div>
                         )}
                       </div>
@@ -862,7 +953,9 @@ export function DataExplorer() {
 
                     {searchTerm && (
                       <div className="bg-gradient-to-r from-amber-500/10 to-orange-600/10 p-3 rounded-lg border border-border/50">
-                        <div className="text-sm font-medium text-foreground mb-1">Search Results</div>
+                        <div className="text-sm font-medium text-foreground mb-1">
+                          Search Results
+                        </div>
                         <div className="text-xs text-muted-foreground">
                           Showing {filteredData.length} of {data.length} records
                         </div>
@@ -878,7 +971,9 @@ export function DataExplorer() {
             {/* Chart Controls */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-2">
-                <Label className="text-foreground font-medium">Chart Type</Label>
+                <Label className="text-orange-500 text-lg font-bold animate-pulse drop-shadow-lg tracking-wide bg-white dark:bg-black rounded px-2 py-1">
+                  Chart Type
+                </Label>
                 <Select value={chartType} onValueChange={setChartType}>
                   <SelectTrigger className="glass-input">
                     <SelectValue />
@@ -929,7 +1024,9 @@ export function DataExplorer() {
                       <SelectItem key={col} value={col}>
                         <div className="flex items-center justify-between w-full">
                           <span className="truncate">{col}</span>
-                          <span className="text-xs text-muted-foreground ml-2">({getColumnType(col)})</span>
+                          <span className="text-xs text-muted-foreground ml-2">
+                            ({getColumnType(col)})
+                          </span>
                         </div>
                       </SelectItem>
                     ))}
@@ -948,7 +1045,9 @@ export function DataExplorer() {
                       <SelectItem key={col} value={col}>
                         <div className="flex items-center justify-between w-full">
                           <span className="truncate">{col}</span>
-                          <span className="text-xs text-muted-foreground ml-2">({getColumnType(col)})</span>
+                          <span className="text-xs text-muted-foreground ml-2">
+                            ({getColumnType(col)})
+                          </span>
                         </div>
                       </SelectItem>
                     ))}
@@ -967,14 +1066,18 @@ export function DataExplorer() {
                         onClick={() => {
                           const csvContent = [
                             columns.join(","),
-                            ...filteredData.map((row) => columns.map((col) => row[col]).join(",")),
-                          ].join("\n")
-                          const blob = new Blob([csvContent], { type: "text/csv" })
-                          const url = URL.createObjectURL(blob)
-                          const a = document.createElement("a")
-                          a.href = url
-                          a.download = "filtered-data.csv"
-                          a.click()
+                            ...filteredData.map((row) =>
+                              columns.map((col) => row[col]).join(",")
+                            ),
+                          ].join("\n");
+                          const blob = new Blob([csvContent], {
+                            type: "text/csv",
+                          });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement("a");
+                          a.href = url;
+                          a.download = "filtered-data.csv";
+                          a.click();
                         }}
                       >
                         <Download className="h-4 w-4 mr-2" />
@@ -997,26 +1100,42 @@ export function DataExplorer() {
             {Object.entries(stats)
               .slice(0, 4)
               .map(([col, stat], index) => (
-                <Card key={col} className="glass-card hover:shadow-lg transition-shadow duration-200">
+                <Card
+                  key={col}
+                  className="glass-card hover:shadow-lg transition-shadow duration-200"
+                >
                   <CardContent className="p-4">
-                    <div className="text-muted-foreground text-sm font-medium truncate" title={col}>
+                    <div
+                      className="text-muted-foreground text-sm font-medium truncate"
+                      title={col}
+                    >
                       {col}
                     </div>
                     <div className="text-xl md:text-2xl font-bold text-foreground mt-1">
-                      {stat.avg.toLocaleString(undefined, { maximumFractionDigits: 1 })}
+                      {stat.avg.toLocaleString(undefined, {
+                        maximumFractionDigits: 1,
+                      })}
                     </div>
                     <div className="text-xs text-muted-foreground mt-1">
-                      Range: {stat.min.toLocaleString()} - {stat.max.toLocaleString()}
+                      Range: {stat.min.toLocaleString()} -{" "}
+                      {stat.max.toLocaleString()}
                     </div>
                     <div
                       className="w-full h-1 rounded-full mt-2"
-                      style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] + "20" }}
+                      style={{
+                        backgroundColor:
+                          CHART_COLORS[index % CHART_COLORS.length] + "20",
+                      }}
                     >
                       <div
                         className="h-1 rounded-full transition-all duration-500"
                         style={{
-                          backgroundColor: CHART_COLORS[index % CHART_COLORS.length],
-                          width: `${Math.min((stat.avg / stat.max) * 100, 100)}%`,
+                          backgroundColor:
+                            CHART_COLORS[index % CHART_COLORS.length],
+                          width: `${Math.min(
+                            (stat.avg / stat.max) * 100,
+                            100
+                          )}%`,
                         }}
                       />
                     </div>
@@ -1052,7 +1171,10 @@ export function DataExplorer() {
                 <Database className="h-5 w-5 text-emerald-500" />
                 Data Table
                 {searchTerm && (
-                  <Badge variant="secondary" className="ml-2 bg-accent text-accent-foreground">
+                  <Badge
+                    variant="secondary"
+                    className="ml-2 bg-accent text-accent-foreground"
+                  >
                     {filteredData.length} results
                   </Badge>
                 )}
@@ -1074,7 +1196,9 @@ export function DataExplorer() {
                               {col}
                             </span>
                             {sortColumn === col && (
-                              <span className="text-xs">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                              <span className="text-xs">
+                                {sortDirection === "asc" ? "↑" : "↓"}
+                              </span>
                             )}
                           </div>
                         </TableHead>
@@ -1089,9 +1213,17 @@ export function DataExplorer() {
                         onClick={() => setSelectedRow(row)}
                       >
                         {columns.slice(0, 4).map((col) => (
-                          <TableCell key={col} className="text-muted-foreground p-3">
-                            <div className="truncate max-w-32" title={String(row[col])}>
-                              {typeof row[col] === "number" ? row[col].toLocaleString() : String(row[col])}
+                          <TableCell
+                            key={col}
+                            className="text-muted-foreground p-3"
+                          >
+                            <div
+                              className="truncate max-w-32"
+                              title={String(row[col])}
+                            >
+                              {typeof row[col] === "number"
+                                ? row[col].toLocaleString()
+                                : String(row[col])}
                             </div>
                           </TableCell>
                         ))}
@@ -1104,7 +1236,8 @@ export function DataExplorer() {
                     <Search className="h-16 w-16 mx-auto mb-4 text-muted-foreground/50" />
                     <p className="text-lg font-medium">No results found</p>
                     <p className="text-sm">
-                      No data matches "{searchTerm}". Try a different search term or load a new dataset.
+                      No data matches "{searchTerm}". Try a different search
+                      term or load a new dataset.
                     </p>
                   </div>
                 )}
@@ -1112,7 +1245,10 @@ export function DataExplorer() {
                   <div className="text-center py-12 text-muted-foreground">
                     <Info className="h-16 w-16 mx-auto mb-4 text-muted-foreground/50" />
                     <p className="text-lg font-medium">No data loaded</p>
-                    <p className="text-sm">Please upload a file or select a sample dataset to get started.</p>
+                    <p className="text-sm">
+                      Please upload a file or select a sample dataset to get
+                      started.
+                    </p>
                   </div>
                 )}
               </div>
@@ -1122,17 +1258,26 @@ export function DataExplorer() {
 
         {/* Row Detail Dialog */}
         {selectedRow && (
-          <Dialog open={!!selectedRow} onOpenChange={() => setSelectedRow(null)}>
+          <Dialog
+            open={!!selectedRow}
+            onOpenChange={() => setSelectedRow(null)}
+          >
             <DialogContent className="glass-dialog max-w-2xl max-h-[80vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-xl text-foreground">Record Details</DialogTitle>
+                <DialogTitle className="text-xl text-foreground">
+                  Record Details
+                </DialogTitle>
               </DialogHeader>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {Object.entries(selectedRow).map(([key, value]) => (
                   <div key={key} className="space-y-2">
-                    <Label className="text-muted-foreground text-sm font-medium">{key}</Label>
+                    <Label className="text-muted-foreground text-sm font-medium">
+                      {key}
+                    </Label>
                     <div className="text-foreground bg-accent/20 p-3 rounded-lg border border-border">
-                      {typeof value === "number" ? value.toLocaleString() : String(value)}
+                      {typeof value === "number"
+                        ? value.toLocaleString()
+                        : String(value)}
                     </div>
                   </div>
                 ))}
@@ -1142,5 +1287,5 @@ export function DataExplorer() {
         )}
       </div>
     </div>
-  )
+  );
 }
