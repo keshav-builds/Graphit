@@ -74,6 +74,11 @@
   }
   body {
     @apply bg-background text-foreground;
+    
+  }
+    body, html, #__next {
+    @apply transition-colors duration-500 ease-in-out;
+   
   }
 }
 
@@ -102,16 +107,12 @@
   border-radius: 3px;
 }
 
+
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground));
+  background-color: #d4b9e6; 
   border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary));
+  background-color: #7a52bb; 
 }
 
-/* Smooth transitions */
-* {
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-}

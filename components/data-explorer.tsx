@@ -768,12 +768,12 @@ export function DataExplorer() {
     <div className="min-h-screen p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="text-center space-y-4">
+        <div className="text-center space-y-4 ">
           <div className="flex items-center justify-center gap-3">
-            <div className="p-3  rounded-xl shadow-lg">
+            <div className=" rounded-xl shadow-lg">
               <img src="/favicon.png" className="h-10 w-10" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold   bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent ">
               <ColourfulText text="Graphit" />
             </h1>
           </div>
@@ -801,10 +801,10 @@ export function DataExplorer() {
           <CardHeader className="pb-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <CardTitle className="text-2xl  text-foreground flex items-center gap-2 ">
-                <Settings className="h-5 w-5 md:h-6 md:w-6 text-indigo-500" />
+                <Settings className="h-5 w-5 md:h-6 md:w-6 text-indigo-500 " />
                 Control Panel
               </CardTitle>
-              <Badge className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+              <Badge className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white ">
                 {filteredData.length} records
               </Badge>
             </div>
@@ -813,8 +813,8 @@ export function DataExplorer() {
             {/* Data Loading & Search */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="space-y-4">
-                <Label className="text-foreground font-medium flex items-center gap-2">
-                  <Database className="h-4 w-4 text-muted-foreground" />
+                <Label className="text-foreground font-medium flex items-center gap-2 ">
+                  <Database className="h-4 w-4 text-muted-foreground  text-orange-600" />
                   Sample Datasets
                 </Label>
                 <div className="grid grid-cols-1 gap-3">
@@ -857,8 +857,8 @@ export function DataExplorer() {
 
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <Label className="text-foreground font-medium flex items-center gap-2 text-xl ">
-                    <Search className="h-4 w-4 text-muted-foreground" />
+                  <Label className="text-foreground text-xl font-medium flex items-center gap-2  ">
+                    <Search className="h-5 w-5 text-muted-foreground text-purple-600" />
                     Search & Filter
                   </Label>
                   <Input
@@ -895,7 +895,7 @@ export function DataExplorer() {
                     type="file"
                     accept=".csv,.json"
                     onChange={handleFileUpload}
-                    className="glass-input file:bg-indigo-500 file:text-white file:border-none file:rounded-md file:hover:bg-indigo-600 file:transition-colors file:px-4 file:py-2"
+                    className="glass-input file:bg-gradient-to-r from-indigo-500 to-purple-600 text-white file:text-white file:border-none file:rounded-md file:hover:bg-indigo-600 file:transition-colors file:px-4 file:py-2"
                   />
                   <div className="text-sm text-muted-foreground space-y-1">
                     <p>• Supported formats: CSV, JSON</p>
@@ -971,7 +971,7 @@ export function DataExplorer() {
             {/* Chart Controls */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-2">
-                <Label className="text-orange-500 text-lg font-bold animate-pulse drop-shadow-lg tracking-wide bg-white dark:bg-black rounded px-2 py-1">
+                <Label className="text-orange-500 text-lg font-bold animate-pulse drop-shadow-lg tracking-wide rounded px-2 py-1">
                   Chart Type
                 </Label>
                 <Select value={chartType} onValueChange={setChartType}>
@@ -1167,7 +1167,7 @@ export function DataExplorer() {
           {/* Data Table */}
           <Card className="glass-card">
             <CardHeader>
-              <CardTitle className="text-lg md:text-xl text-foreground flex items-center gap-2">
+              <CardTitle className="text-lg md:text-2xl text-foreground flex items-center gap-2">
                 <Database className="h-5 w-5 text-emerald-500" />
                 Data Table
                 {searchTerm && (

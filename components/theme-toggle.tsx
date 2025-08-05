@@ -1,27 +1,48 @@
 "use client"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
-
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useEffect, useState } from "react"
 
 export function ThemeToggle() {
-  const { setTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return null
+
+  const isDark = theme === "dark"
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-card border-border text-foreground">
-        <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+<button
+  aria-label="Toggle theme"
+  onClick={() => setTheme(isDark ? "light" : "dark")}
+  className={`
+    relative rounded-full flex items-center transition-colors duration-300
+    bg-slate-300 dark:bg-purple-600
+    
+    shadow
+    border border-gray-400 dark:border-purple-700
+     ml-3
+    w-12 h-7       /* Mobile size */
+    md:w-20 md:h-10 /* Desktop and up */
+  `}
+>
+  <span
+    className={`
+      block  rounded-full bg-white transition-transform duration-300
+      h-6 w-6           /* Mobile thumb size */
+      md:h-8 md:w-8     /* Desktop thumb size */
+      transform
+      ${isDark ? "translate-x-5 md:translate-x-10" : "translate-x-1"}
+      flex items-center justify-center
+      text-xs
+    `}
+  >
+    {isDark
+      ? <Moon className="text-purple-600 w-4 h-4 md:w-5 md:h-5" />
+      : <Sun className="text-yellow-500 w-4 h-4 md:w-5 md:h-5" />
+    }
+  </span>
+</button>
   )
 }
