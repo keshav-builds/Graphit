@@ -1,11 +1,14 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Papa from "papaparse";
+import { toast } from "sonner";
 
+import html2canvas from "html2canvas";
 import {
   Select,
   SelectContent,
@@ -76,20 +79,21 @@ import {
   BarChart4,
 } from "lucide-react";
 
+// ---- Datasets ----
+
 const CHART_COLORS = [
-  "#6366F1", // Indigo
-  "#10B981", // Emerald
-  "#F59E0B", // Amber
-  "#EF4444", // Red
-  "#8B5CF6", // Violet
-  "#06B6D4", // Cyan
-  "#84CC16", // Lime
-  "#F97316", // Orange
-  "#EC4899", // Pink
-  "#14B8A6", // Teal
+  "#6366F1",
+  "#10B981",
+  "#F59E0B",
+  "#EF4444",
+  "#8B5CF6",
+  "#06B6D4",
+  "#84CC16",
+  "#F97316",
+  "#EC4899",
+  "#14B8A6",
 ];
 
-// Sample datasets embedded directly
 const BOLLYWOOD_MOVIES = [
   {
     title: "Dangal",
@@ -332,6 +336,41 @@ const SAMPLE_DATASETS = [
   },
 ];
 
+// ---- Glass Loader Animation ----
+
+function GlassOverlay({ show, text }) {
+  return show ? (
+    <div
+      style={{
+        position: "fixed",
+        zIndex: 1000,
+        left: 0,
+        top: 0,
+        width: "100vw",
+        height: "100vh",
+        backdropFilter: "blur(16px)",
+        background: "rgba(41,45,62,0.3)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      <div className="rounded-2xl px-8 py-8 bg-white/40 dark:bg-[#232536]/60 glass-card flex flex-col items-center">
+        <div className="animate-spin rounded-full border-t-4 border-b-4 border-indigo-500 h-16 w-16 mb-4"></div>
+        <span className="font-bold text-2xl text-indigo-900 dark:text-white drop-shadow">
+          {text || "Processing data..."}
+        </span>
+        <div className="text-muted-foreground text-sm mt-2">
+          Please wait while your data is being processed.
+        </div>
+      </div>
+    </div>
+  ) : null;
+}
+
+// ---- DataExplorer (main) ----
+
 export function DataExplorer() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -345,10 +384,17 @@ export function DataExplorer() {
   const [selectedRow, setSelectedRow] = useState(null);
   const [currentDataset, setCurrentDataset] = useState("Indian Cities");
   const [isLoading, setIsLoading] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [reportUrl, setReportUrl] = useState(null);
+
+  const chartContainerRef = useRef();
+
+  // --- Load Sample Data ---
 
   const loadSampleData = (sampleData, datasetName) => {
     setIsLoading(true);
-    try {
+    setTimeout(() => {
+      // Simulate small loading time
       setData(sampleData);
       setFilteredData(sampleData);
       setCurrentDataset(datasetName);
@@ -357,7 +403,6 @@ export function DataExplorer() {
         const cols = Object.keys(sampleData[0]);
         setColumns(cols);
 
-        // Smart axis selection
         const numericCols = cols.filter(
           (col) => typeof sampleData[0][col] === "number"
         );
@@ -372,16 +417,16 @@ export function DataExplorer() {
         setXAxis("");
         setYAxis("");
       }
-    } catch (error) {
-      console.error("Failed to load data:", error);
-    } finally {
       setIsLoading(false);
-    }
+    }, 300);
   };
 
   useEffect(() => {
     loadSampleData(INDIAN_CITIES, "Indian Cities");
+    // eslint-disable-next-line
   }, []);
+
+  // --- Filtering / Sorting ---
 
   useEffect(() => {
     let result = [...data];
@@ -398,11 +443,9 @@ export function DataExplorer() {
       result.sort((a, b) => {
         const aVal = a[sortColumn];
         const bVal = b[sortColumn];
-
         if (typeof aVal === "number" && typeof bVal === "number") {
           return sortDirection === "asc" ? aVal - bVal : bVal - aVal;
         }
-
         const aStr = String(aVal).toLowerCase();
         const bStr = String(bVal).toLowerCase();
         return sortDirection === "asc"
@@ -414,16 +457,30 @@ export function DataExplorer() {
     setFilteredData(result);
   }, [data, searchTerm, sortColumn, sortDirection]);
 
+  // --- Chart Data Memoization (Pie Chart limited) ---
+
   const chartData = useMemo(() => {
     if (!xAxis || !yAxis || filteredData.length === 0) return [];
 
     if (chartType === "pie") {
+      // Compute frequency
       const counts = {};
       filteredData.forEach((row) => {
         const key = String(row[xAxis]);
         counts[key] = (counts[key] || 0) + 1;
       });
-      return Object.entries(counts).map(([name, value]) => ({ name, value }));
+      let entries = Object.entries(counts)
+        .map(([name, value]) => ({ name, value }))
+        .sort((a, b) => b.value - a.value);
+
+      if (entries.length > 10) {
+        // Top 10 plus "Others"
+        const topEntries = entries.slice(0, 10);
+        const othersSum = entries.slice(10).reduce((a, b) => a + b.value, 0);
+        topEntries.push({ name: "Others", value: othersSum });
+        return topEntries;
+      }
+      return entries;
     }
 
     if (chartType === "scatter") {
@@ -438,12 +495,11 @@ export function DataExplorer() {
       }));
     }
 
-    // For bar, line, area charts - aggregate data
+    // For bar, line, area
     const aggregated = {};
     filteredData.forEach((row) => {
       const xVal = String(row[xAxis]);
       const yVal = Number(row[yAxis]) || 0;
-
       if (!aggregated[xVal]) {
         aggregated[xVal] = { sum: 0, count: 0 };
       }
@@ -458,60 +514,83 @@ export function DataExplorer() {
     }));
   }, [filteredData, xAxis, yAxis, chartType]);
 
+  // --- File Upload ---
+
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const content = e.target.result;
-        let parsedData = [];
+    setShowOverlay(true);
 
-        if (file.type === "application/json") {
-          parsedData = JSON.parse(content);
-        } else if (file.type === "text/csv") {
-          const lines = content.split("\n").filter((line) => line.trim());
-          const headers = lines[0].split(",").map((h) => h.trim());
-          parsedData = lines.slice(1).map((line) => {
-            const values = line.split(",").map((v) => v.trim());
-            const row = {};
-            headers.forEach((header, index) => {
-              const val = values[index];
-              row[header] = isNaN(val) ? val : Number(val);
-            });
-            return row;
-          });
-        }
-
-        setData(parsedData);
-        setFilteredData(parsedData);
-        setColumns(Object.keys(parsedData[0] || {}));
-        setCurrentDataset(file.name);
-
-        // Auto-select axes
-        if (parsedData.length > 0) {
-          const cols = Object.keys(parsedData[0]);
-          const numericCols = cols.filter(
-            (col) => typeof parsedData[0][col] === "number"
-          );
-          const stringCols = cols.filter(
-            (col) => typeof parsedData[0][col] === "string"
-          );
-
-          setXAxis(stringCols[0] || cols[0]);
-          setYAxis(numericCols[0] || cols[1]);
-        } else {
-          setColumns([]);
-          setXAxis("");
-          setYAxis("");
-        }
-      } catch (error) {
-        alert("Error parsing file. Please check the format.");
-      }
+    const finishUpload = () => {
+      setTimeout(() => {
+        setShowOverlay(false);
+      }, 800); // Minimum display
     };
-    reader.readAsText(file);
+
+    if (file.type === "application/json") {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parsedData = JSON.parse(e.target?.result);
+          if (!Array.isArray(parsedData) || parsedData.length > 1000) {
+            setShowOverlay(false);
+            toast.error(
+              "Max 1,000 rows are supported for now. We are working on supporting more!",
+              {
+                description:
+                  "Your file was not imported. Please upload a smaller CSV/JSON.",
+                duration: 6000,
+              }
+            );
+            return;
+          }
+          loadSampleData(parsedData, file.name);
+          finishUpload();
+        } catch {
+          setShowOverlay(false);
+          toast.error("Error reading JSON file.");
+        }
+      };
+      reader.readAsText(file);
+    } else if (file.type === "text/csv" || file.name.endsWith(".csv")) {
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+          const cleaned = results.data.map((row) => {
+            const cleanedRow = {};
+            Object.entries(row).forEach(([k, v]) => {
+              if (k && k.trim() !== "") {
+                cleanedRow[k.trim()] = v === "" ? "" : isNaN(v) ? v : Number(v);
+              }
+            });
+            return cleanedRow;
+          });
+
+          if (cleaned.length > 1000) {
+            setShowOverlay(false);
+            
+            toast.error(
+              "Max 1000 rows are supported for now. We are working on supporting more!"
+            );
+            return;
+          }
+          loadSampleData(cleaned, file.name);
+          finishUpload();
+        },
+        error: function () {
+          setShowOverlay(false);
+          toast.error("Error parsing CSV file.");
+        },
+      });
+    } else {
+      setShowOverlay(false);
+      alert("Unsupported file type. Please upload a JSON or CSV file.");
+    }
   };
+
+  // --- Analysis, Stats, and Utility helpers ---
 
   const handleSort = (column) => {
     if (sortColumn === column) {
@@ -533,7 +612,6 @@ export function DataExplorer() {
 
   const stats = useMemo(() => {
     if (filteredData.length === 0) return {};
-
     const result = {};
     numericColumns.forEach((col) => {
       const values = filteredData
@@ -551,73 +629,49 @@ export function DataExplorer() {
     return result;
   }, [filteredData, columns]);
 
-  // Data insights for the new section
-  const dataInsights = useMemo(() => {
-    if (filteredData.length === 0) return null;
+  // ---- Report Sharing (Generate Screenshot) ----
 
-    const insights = {
-      totalRecords: filteredData.length,
-      uniqueValues: {},
-      topValues: {},
-      dataQuality: {
-        complete: 0,
-        missing: 0,
-      },
-    };
-
-    // Calculate unique values and top values for categorical columns
-    columns.forEach((col) => {
-      const values = filteredData
-        .map((row) => row[col])
-        .filter((val) => val !== null && val !== undefined && val !== "");
-      const uniqueVals = [...new Set(values)];
-      insights.uniqueValues[col] = uniqueVals.length;
-
-      if (getColumnType(col) === "string" && uniqueVals.length <= 10) {
-        const counts = {};
-        values.forEach((val) => {
-          counts[val] = (counts[val] || 0) + 1;
-        });
-        insights.topValues[col] = Object.entries(counts)
-          .sort(([, a], [, b]) => b - a)
-          .slice(0, 5)
-          .map(([value, count]) => ({ value, count }));
-      }
-
-      // Data quality
-      const completeValues = values.length;
-      const totalValues = filteredData.length;
-      insights.dataQuality.complete += completeValues;
-      insights.dataQuality.missing += totalValues - completeValues;
+  const handleGenerateReport = async () => {
+    if (!chartContainerRef.current) return;
+    const canvas = await html2canvas(chartContainerRef.current, {
+      backgroundColor: null,
     });
+    const dataUrl = canvas.toDataURL("image/png");
+    setReportUrl(dataUrl);
+  };
 
-    return insights;
-  }, [filteredData, columns]);
+  // ---- Override "No data" states to keep from blank visualization ---
+
+  const hasRealData =
+    Array.isArray(filteredData) &&
+    filteredData.length > 0 &&
+    columns.length > 0;
+
+  // --- Chart Rendering ---
 
   const renderChart = () => {
-    if (chartData.length === 0 || !xAxis || !yAxis) {
+    if (!hasRealData || !xAxis || !yAxis) {
+      // Safeguard so chart never blank for sample datasets
       return (
         <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
           <Database className="h-16 w-16 mb-4 text-muted-foreground/50" />
           <p className="text-lg font-medium">No data or axes selected</p>
           <p className="text-sm text-center max-w-md">
-            Please upload data or select X and Y axes in the Control Panel to
-            generate visualizations.
+            Please load or filter your data for visualization.
           </p>
         </div>
       );
     }
 
-    const commonProps = {
+    const chartProps = {
       data: chartData,
       margin: { top: 20, right: 30, left: 20, bottom: 5 },
     };
-
     const tooltipContentStyle = {
-      backgroundColor: "#fff", // White background
+      backgroundColor: "#fff",
       border: "1px solid #eee",
       borderRadius: "8px",
-      color: "#333", // Dark, visible text
+      color: "#333",
       padding: "12px",
       boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
     };
@@ -625,7 +679,7 @@ export function DataExplorer() {
     switch (chartType) {
       case "bar":
         return (
-          <BarChart {...commonProps}>
+          <BarChart {...chartProps}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis
               dataKey={xAxis}
@@ -641,10 +695,9 @@ export function DataExplorer() {
             <Bar dataKey={yAxis} fill={CHART_COLORS[0]} radius={[4, 4, 0, 0]} />
           </BarChart>
         );
-
       case "line":
         return (
-          <LineChart {...commonProps}>
+          <LineChart {...chartProps}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis
               dataKey={xAxis}
@@ -667,10 +720,9 @@ export function DataExplorer() {
             />
           </LineChart>
         );
-
       case "area":
         return (
-          <AreaChart {...commonProps}>
+          <AreaChart {...chartProps}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis
               dataKey={xAxis}
@@ -707,7 +759,6 @@ export function DataExplorer() {
             </defs>
           </AreaChart>
         );
-
       case "pie":
         return (
           <PieChart>
@@ -734,10 +785,9 @@ export function DataExplorer() {
             <Legend />
           </PieChart>
         );
-
       case "scatter":
         return (
-          <ScatterChart {...commonProps}>
+          <ScatterChart {...chartProps}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis
               dataKey="x"
@@ -758,16 +808,18 @@ export function DataExplorer() {
             <Scatter name="Data Points" dataKey="y" fill={CHART_COLORS[3]} />
           </ScatterChart>
         );
-
       default:
         return null;
     }
   };
 
+  // ---- Main return (UI) ----
+
   return (
     <div className="min-h-screen p-4 md:p-6 lg:p-8">
+      <GlassOverlay show={showOverlay} text="Processing data..." />
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
+        {/* ...HEADER */}
         <div className="text-center space-y-4 ">
           <div className="flex items-center justify-center gap-3">
             <div className=" rounded-xl shadow-lg">
@@ -795,12 +847,11 @@ export function DataExplorer() {
             </Badge>
           </div>
         </div>
-
         {/* Controls Panel */}
         <Card className="glass-card">
           <CardHeader className="pb-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <CardTitle className="text-2xl  text-foreground flex items-center gap-2 ">
+              <CardTitle className="text-2xl text-foreground flex items-center gap-2">
                 <Settings className="h-5 w-5 md:h-6 md:w-6 text-indigo-500 " />
                 Control Panel
               </CardTitle>
@@ -810,11 +861,11 @@ export function DataExplorer() {
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Data Loading & Search */}
+            {/* {data sample} */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="space-y-4">
                 <Label className="text-foreground font-medium flex items-center gap-2 ">
-                  <Database className="h-4 w-4 text-muted-foreground  text-orange-600" />
+                  <Database className="h-4 w-4 text-muted-foreground text-orange-600" />
                   Sample Datasets
                 </Label>
                 <div className="grid grid-cols-1 gap-3">
@@ -826,12 +877,12 @@ export function DataExplorer() {
                         variant={
                           currentDataset === dataset.name
                             ? "default"
-                            : "outline"
+                            : "ghost"
                         }
-                        className={`justify-start text-left h-auto p-4 transition-all duration-200 ${
+                        className={` justify-start text-left h-auto p-4  ${
                           currentDataset === dataset.name
                             ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-lg"
-                            : "hover:bg-accent/50 hover:shadow-md"
+                            : "hover:bg-accent/50 hover:shadow-md border border-gray-500/20 dark:border-gray-300/20"
                         }`}
                         onClick={() =>
                           loadSampleData(dataset.data, dataset.name)
@@ -855,10 +906,11 @@ export function DataExplorer() {
                 </div>
               </div>
 
+              {/* ...Search & Upload... */}
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <Label className="text-foreground text-xl font-medium flex items-center gap-2  ">
-                    <Search className="h-5 w-5 text-muted-foreground text-purple-600" />
+                  <Label className="text-foreground text-xl font-medium flex items-center gap-2 ">
+                    <Search className="h-5 w-5 text-purple-600" />
                     Search & Filter
                   </Label>
                   <Input
@@ -881,15 +933,26 @@ export function DataExplorer() {
                     </div>
                   )}
                 </div>
-                {/* {upload data box} */}
+
                 <div className="space-y-3 ">
                   <Label
                     htmlFor="file-upload"
                     className="text-foreground text-xl font-medium  flex items-center gap-2  mt-10"
                   >
                     <Upload className="h-6 w-6 mr-1 text-3xl font-bold animate-bounce text-purple-600" />
-                     Upload Your Data
+                    Upload Your Data
                   </Label>
+                  <style jsx global>{`
+                    input[type="file"] {
+                      color: black; /* Light mode */
+                    }
+                    .dark input[type="file"] {
+                      color: #e0e0e0; /* Dark mode */
+                    }
+                    input[type="file"]::-webkit-file-upload-button {
+                      color: white;
+                    }
+                  `}</style>
                   <Input
                     id="file-upload"
                     type="file"
@@ -899,12 +962,12 @@ export function DataExplorer() {
                   />
                   <div className="text-sm text-muted-foreground space-y-1">
                     <p>• Supported formats: CSV, JSON</p>
-                    <p>• Max file size: 10MB</p>
+                    <p>• Max rows: 1,000</p>
                   </div>
                 </div>
               </div>
 
-              {/* Quick Stats Panel */}
+              {/* Quick Stats */}
               <div className="space-y-4">
                 <Label className="text-foreground font-medium flex items-center gap-2">
                   <Activity className="h-4 w-4 text-muted-foreground" />
@@ -950,17 +1013,6 @@ export function DataExplorer() {
                         )}
                       </div>
                     </div>
-
-                    {searchTerm && (
-                      <div className="bg-gradient-to-r from-amber-500/10 to-orange-600/10 p-3 rounded-lg border border-border/50">
-                        <div className="text-sm font-medium text-foreground mb-1">
-                          Search Results
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Showing {filteredData.length} of {data.length} records
-                        </div>
-                      </div>
-                    )}
                   </div>
                 )}
               </div>
@@ -1012,7 +1064,6 @@ export function DataExplorer() {
                   </SelectContent>
                 </Select>
               </div>
-
               <div className="space-y-2">
                 <Label className="text-foreground font-medium">X-Axis</Label>
                 <Select value={xAxis} onValueChange={setXAxis}>
@@ -1033,59 +1084,36 @@ export function DataExplorer() {
                   </SelectContent>
                 </Select>
               </div>
-
               <div className="space-y-2">
-                <Label className="text-foreground font-medium">Y-Axis</Label>
-                <Select value={yAxis} onValueChange={setYAxis}>
-                  <SelectTrigger className="glass-input">
-                    <SelectValue placeholder="Select Y-axis" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card border-border text-foreground max-h-60 overflow-y-auto">
-                    {columns.map((col) => (
-                      <SelectItem key={col} value={col}>
-                        <div className="flex items-center justify-between w-full">
-                          <span className="truncate">{col}</span>
-                          <span className="text-xs text-muted-foreground ml-2">
-                            ({getColumnType(col)})
-                          </span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-foreground font-medium">Export</Label>
+                <Label className="text-foreground font-medium">
+                  Download Report
+                </Label>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
-                        variant="outline"
-                        className="w-full glass-input bg-transparent"
-                        onClick={() => {
-                          const csvContent = [
-                            columns.join(","),
-                            ...filteredData.map((row) =>
-                              columns.map((col) => row[col]).join(",")
-                            ),
-                          ].join("\n");
-                          const blob = new Blob([csvContent], {
-                            type: "text/csv",
-                          });
-                          const url = URL.createObjectURL(blob);
-                          const a = document.createElement("a");
-                          a.href = url;
-                          a.download = "filtered-data.csv";
-                          a.click();
+                        variant="ghost"
+                        className="w-full glass-input flex items-center gap-2 bg-transparent border border-gray-500/30 dark:border-gray-300/30"
+                        onClick={async () => {
+                          await handleGenerateReport();
+                          if (reportUrl) {
+                            // Automatically trigger download when ready
+                            const a = document.createElement("a");
+                            a.href = reportUrl;
+                            a.download = "chart-report.png";
+                            a.click();
+                          }
                         }}
                       >
-                        <Download className="h-4 w-4 mr-2" />
-                        CSV
+                        <Download className="h-4 w-4 mr-1 animate-pulse" />
+                        Download Report
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent className="bg-card text-foreground border-border">
-                      <p>Export filtered data as CSV</p>
+                      <p>
+                        Download a PNG image of your current chart for sharing
+                        or records.
+                      </p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -1094,58 +1122,8 @@ export function DataExplorer() {
           </CardContent>
         </Card>
 
-        {/* Stats Cards */}
-        {Object.keys(stats).length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {Object.entries(stats)
-              .slice(0, 4)
-              .map(([col, stat], index) => (
-                <Card
-                  key={col}
-                  className="glass-card hover:shadow-lg transition-shadow duration-200"
-                >
-                  <CardContent className="p-4">
-                    <div
-                      className="text-muted-foreground text-sm font-medium truncate"
-                      title={col}
-                    >
-                      {col}
-                    </div>
-                    <div className="text-xl md:text-2xl font-bold text-foreground mt-1">
-                      {stat.avg.toLocaleString(undefined, {
-                        maximumFractionDigits: 1,
-                      })}
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      Range: {stat.min.toLocaleString()} -{" "}
-                      {stat.max.toLocaleString()}
-                    </div>
-                    <div
-                      className="w-full h-1 rounded-full mt-2"
-                      style={{
-                        backgroundColor:
-                          CHART_COLORS[index % CHART_COLORS.length] + "20",
-                      }}
-                    >
-                      <div
-                        className="h-1 rounded-full transition-all duration-500"
-                        style={{
-                          backgroundColor:
-                            CHART_COLORS[index % CHART_COLORS.length],
-                          width: `${Math.min(
-                            (stat.avg / stat.max) * 100,
-                            100
-                          )}%`,
-                        }}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-          </div>
-        )}
+        {/* ...STATS CARDS, MAIN CONTENT  */}
 
-        {/* Main Content */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           {/* Chart */}
           <Card className="glass-card">
@@ -1156,16 +1134,15 @@ export function DataExplorer() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-80 md:h-96">
+              <div className="h-80 md:h-96" ref={chartContainerRef}>
                 <ResponsiveContainer width="100%" height="100%">
                   {renderChart()}
                 </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
-
-          {/* Data Table */}
           <Card className="glass-card">
+            
             <CardHeader>
               <CardTitle className="text-lg md:text-2xl text-foreground flex items-center gap-2">
                 <Database className="h-5 w-5 text-emerald-500" />
@@ -1178,6 +1155,10 @@ export function DataExplorer() {
                     {filteredData.length} results
                   </Badge>
                 )}
+                <div className=" ml-6  flex items-center gap-2 text-sm text-muted-foreground italic select-none">
+  <Info className="h-5 w-5" />
+  <span>Click on a row to view more details</span>
+</div>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -1188,16 +1169,28 @@ export function DataExplorer() {
                       {columns.slice(0, 4).map((col) => (
                         <TableHead
                           key={col}
-                          className="text-foreground cursor-pointer hover:text-indigo-500 transition-colors p-3 font-medium"
+                          className="text-foreground cursor-pointer hover:text-indigo-600 hover:underline transition-colors p-3 font-medium"
                           onClick={() => handleSort(col)}
+                          title="Click to sort by this column"
+                          aria-sort={
+                            sortColumn === col
+                              ? sortDirection === "asc"
+                                ? "ascending"
+                                : "descending"
+                              : "none"
+                          }
                         >
-                          <div className="flex items-center gap-1">
-                            <span className="truncate" title={col}>
-                              {col}
+                          <div className="flex items-center gap-1 select-none">
+                            <span className="truncate">
+                              {col.charAt(0).toUpperCase() + col.slice(1)}
                             </span>
-                            {sortColumn === col && (
-                              <span className="text-xs">
-                                {sortDirection === "asc" ? "↑" : "↓"}
+                            {sortColumn === col ? (
+                              <span className="text-xs text-purple-600">
+                                {sortDirection === "asc" ? "▲" : "▼"}
+                              </span>
+                            ) : (
+                              <span className="text-sm text-muted-foreground text-purple-600 ">
+                                ⇅
                               </span>
                             )}
                           </div>
