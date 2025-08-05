@@ -1142,25 +1142,27 @@ export function DataExplorer() {
             </CardContent>
           </Card>
           <Card className="glass-card">
-            
             <CardHeader>
-              <CardTitle className="text-lg md:text-2xl text-foreground flex items-center gap-2">
-                <Database className="h-5 w-5 text-emerald-500" />
-                Data Table
-                {searchTerm && (
-                  <Badge
-                    variant="secondary"
-                    className="ml-2 bg-accent text-accent-foreground"
-                  >
-                    {filteredData.length} results
-                  </Badge>
-                )}
-                <div className=" ml-6  flex items-center gap-2 text-sm text-muted-foreground italic select-none">
-  <Info className="h-5 w-5" />
-  <span>Click on a row to view more details</span>
-</div>
-              </CardTitle>
-            </CardHeader>
+  <div className="flex flex-col gap-1">
+    <div className="flex items-center gap-2">
+      <Database className="h-5 w-5 text-emerald-500" />
+      <CardTitle className="text-lg md:text-2xl text-foreground">
+        Data Table
+      </CardTitle>
+    </div>
+    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+      <Info className="h-4 w-4" />
+      <span>Click on a row to view more details</span>
+    </div>
+    {searchTerm && (
+      <Badge className="md:self-start mt-2 md:mt-0">
+        {searchTerm}
+      </Badge>
+    )}
+  </div>
+</CardHeader>
+
+            
             <CardContent className="p-0">
               <div className="h-80 md:h-96 overflow-auto">
                 <Table>
