@@ -2,6 +2,9 @@
 
 A modern, responsive web application built with **Next.js 14**, **React**, and **TypeScript** that transforms raw data into beautiful, interactive visualizations. Perfect for data analysts, business professionals, and anyone who needs to quickly explore and understand their data.
 
+### 🚀 **Live Demo**: [graphit](https://graphit-eta.vercel.app/)
+
+
 ## 🎥 Demo
 
 ### Screenshot 1: Data Visualization Dashboard  
@@ -10,7 +13,7 @@ A modern, responsive web application built with **Next.js 14**, **React**, and *
 ### Screenshot 2: Interactive Table View  
 ![Interactive Table View](public/graphit2.png)
 
-### **Live Demo**: [graphit](https://graphit-eta.vercel.app/)
+
 
 ---
 ## ✨ Features
