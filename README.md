@@ -4,6 +4,9 @@ A modern, responsive web application built with **Next.js 14**, **React**, and *
 
 ### 🚀 **Live Demo**: [graphit](https://graphit-eta.vercel.app/)
 
+## ⚡️ Current Work in Progress
+
+We are actively **enhancing Graphit with table virtualization and streaming data support** to handle large CSV and JSON files efficiently.This upgrade will enable  interaction with much larger datasets.
 
 ## 🎥 Demo
 
