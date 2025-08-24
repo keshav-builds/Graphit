@@ -68,7 +68,6 @@ import {
   ScatterChartIcon as ScatterIcon,
   TrendingUp,
   Database,
-  Sparkles,
   Eye,
   Settings,
   Zap,
@@ -94,243 +93,22 @@ const CHART_COLORS = [
   "#14B8A6",
 ];
 
-const BOLLYWOOD_MOVIES = [
-  {
-    title: "Dangal",
-    genre: "Drama",
-    rating: 8.4,
-    year: 2016,
-    director: "Nitesh Tiwari",
-    budget_cr: 70,
-    collection_cr: 2023,
-    language: "Hindi",
-  },
-  {
-    title: "3 Idiots",
-    genre: "Comedy",
-    rating: 8.4,
-    year: 2009,
-    director: "Rajkumar Hirani",
-    budget_cr: 55,
-    collection_cr: 402,
-    language: "Hindi",
-  },
-  {
-    title: "Baahubali 2",
-    genre: "Action",
-    rating: 8.2,
-    year: 2017,
-    director: "S.S. Rajamouli",
-    budget_cr: 250,
-    collection_cr: 1800,
-    language: "Telugu",
-  },
-  {
-    title: "Lagaan",
-    genre: "Drama",
-    rating: 8.1,
-    year: 2001,
-    director: "Ashutosh Gowariker",
-    budget_cr: 25,
-    collection_cr: 65,
-    language: "Hindi",
-  },
-  {
-    title: "Zindagi Na Milegi Dobara",
-    genre: "Adventure",
-    rating: 8.2,
-    year: 2011,
-    director: "Zoya Akhtar",
-    budget_cr: 65,
-    collection_cr: 153,
-    language: "Hindi",
-  },
-  {
-    title: "Queen",
-    genre: "Comedy",
-    rating: 8.2,
-    year: 2013,
-    director: "Vikas Bahl",
-    budget_cr: 11,
-    collection_cr: 61,
-    language: "Hindi",
-  },
-  {
-    title: "Tumhari Sulu",
-    genre: "Comedy",
-    rating: 7.1,
-    year: 2017,
-    director: "Suresh Triveni",
-    budget_cr: 20,
-    collection_cr: 52,
-    language: "Hindi",
-  },
-  {
-    title: "Pink",
-    genre: "Drama",
-    rating: 8.1,
-    year: 2016,
-    director: "Aniruddha Roy Chowdhury",
-    budget_cr: 30,
-    collection_cr: 65,
-    language: "Hindi",
-  },
-  {
-    title: "Andhadhun",
-    genre: "Thriller",
-    rating: 8.2,
-    year: 2018,
-    director: "Sriram Raghavan",
-    budget_cr: 32,
-    collection_cr: 110,
-    language: "Hindi",
-  },
-  {
-    title: "Gully Boy",
-    genre: "Drama",
-    rating: 7.9,
-    year: 2019,
-    director: "Zoya Akhtar",
-    budget_cr: 65,
-    collection_cr: 238,
-    language: "Hindi",
-  },
-];
-
-const INDIAN_CITIES = [
-  {
-    city: "Mumbai",
-    state: "Maharashtra",
-    population: 20411000,
-    area_km2: 603,
-    gdp_billion: 310,
-    region: "West",
-  },
-  {
-    city: "Delhi",
-    state: "Delhi",
-    population: 32900000,
-    area_km2: 1484,
-    gdp_billion: 294,
-    region: "North",
-  },
-  {
-    city: "Bengaluru",
-    state: "Karnataka",
-    population: 13200000,
-    area_km2: 741,
-    gdp_billion: 110,
-    region: "South",
-  },
-  {
-    city: "Hyderabad",
-    state: "Telangana",
-    population: 10500000,
-    area_km2: 650,
-    gdp_billion: 74,
-    region: "South",
-  },
-  {
-    city: "Chennai",
-    state: "Tamil Nadu",
-    population: 11500000,
-    area_km2: 1189,
-    gdp_billion: 78,
-    region: "South",
-  },
-  {
-    city: "Kolkata",
-    state: "West Bengal",
-    population: 15700000,
-    area_km2: 1886,
-    gdp_billion: 60,
-    region: "East",
-  },
-  {
-    city: "Pune",
-    state: "Maharashtra",
-    population: 7400000,
-    area_km2: 729,
-    gdp_billion: 69,
-    region: "West",
-  },
-  {
-    city: "Ahmedabad",
-    state: "Gujarat",
-    population: 8400000,
-    area_km2: 505,
-    gdp_billion: 68,
-    region: "West",
-  },
-];
-
-const INDIAN_COMPANIES = [
-  {
-    company: "Reliance Industries",
-    sector: "Oil & Gas",
-    revenue_cr: 870000,
-    employees: 236000,
-    founded: 1973,
-    headquarters: "Mumbai",
-  },
-  {
-    company: "Tata Consultancy Services",
-    sector: "IT Services",
-    revenue_cr: 254000,
-    employees: 528000,
-    founded: 1968,
-    headquarters: "Mumbai",
-  },
-  {
-    company: "Infosys",
-    sector: "IT Services",
-    revenue_cr: 168000,
-    employees: 314000,
-    founded: 1981,
-    headquarters: "Bengaluru",
-  },
-  {
-    company: "HDFC Bank",
-    sector: "Banking",
-    revenue_cr: 179000,
-    employees: 177000,
-    founded: 1994,
-    headquarters: "Mumbai",
-  },
-  {
-    company: "Wipro",
-    sector: "IT Services",
-    revenue_cr: 105000,
-    employees: 250000,
-    founded: 1945,
-    headquarters: "Bengaluru",
-  },
-  {
-    company: "HCL Technologies",
-    sector: "IT Services",
-    revenue_cr: 120000,
-    employees: 210000,
-    founded: 1976,
-    headquarters: "Noida",
-  },
-];
-
 const SAMPLE_DATASETS = [
   {
     name: "Bollywood Movies",
-    data: BOLLYWOOD_MOVIES,
+    filePath: "/datasets/bollywood_movies.json",
     description: "ratings, box office, and budget data",
-    icon: FileText,
+    icon: FileText, 
   },
   {
     name: "Indian Cities",
-    data: INDIAN_CITIES,
+    filePath: "/datasets/indian_cities.json",
     description: "population, GDP, and area statistics",
     icon: BarChart4,
   },
   {
     name: "Indian Companies",
-    data: INDIAN_COMPANIES,
+    filePath: "/datasets/indian_companies.json",
     description: "revenue and employee data",
     icon: TrendingUp,
   },
@@ -420,9 +198,27 @@ export function DataExplorer() {
       setIsLoading(false);
     }, 300);
   };
+  //  loadDataset function
+  const loadDataset = (filePath, datasetName) => {
+    setIsLoading(true);
+    fetch(filePath)
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
+      .then((data) => {
+        loadSampleData(data, datasetName);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        toast.error(`Failed to load ${datasetName}`);
+        setIsLoading(false);
+        console.error("Dataset loading error:", error);
+      });
+  };
 
   useEffect(() => {
-    loadSampleData(INDIAN_CITIES, "Indian Cities");
+    loadDataset("/datasets/indian_cities.json", "Indian Cities");
     // eslint-disable-next-line
   }, []);
 
@@ -570,7 +366,7 @@ export function DataExplorer() {
 
           if (cleaned.length > 1000) {
             setShowOverlay(false);
-            
+
             toast.error(
               "Max 1000 rows are supported for now. We are working on supporting more!"
             );
@@ -875,17 +671,15 @@ export function DataExplorer() {
                       <Button
                         key={dataset.name}
                         variant={
-                          currentDataset === dataset.name
-                            ? "default"
-                            : "ghost"
+                          currentDataset === dataset.name ? "default" : "ghost"
                         }
-                        className={` justify-start text-left h-auto p-4  ${
+                        className={`justify-start text-left h-auto p-4 ${
                           currentDataset === dataset.name
                             ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-lg"
                             : "hover:bg-accent/50 hover:shadow-md border border-gray-500/20 dark:border-gray-300/20"
                         }`}
                         onClick={() =>
-                          loadSampleData(dataset.data, dataset.name)
+                          loadDataset(dataset.filePath, dataset.name)
                         }
                         disabled={isLoading}
                       >
@@ -1146,26 +940,25 @@ export function DataExplorer() {
           </Card>
           <Card className="glass-card">
             <CardHeader>
-  <div className="flex flex-col gap-1">
-    <div className="flex items-center gap-2">
-      <Database className="h-5 w-5 text-emerald-500" />
-      <CardTitle className="text-lg md:text-2xl text-foreground">
-        Data Table
-      </CardTitle>
-    </div>
-    <div className="flex items-center gap-1 text-sm text-muted-foreground">
-      <Info className="h-4 w-4" />
-      <span>Click on a row to view more details</span>
-    </div>
-    {searchTerm && (
-      <Badge className="md:self-start mt-2 md:mt-0">
-        {searchTerm}
-      </Badge>
-    )}
-  </div>
-</CardHeader>
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <Database className="h-5 w-5 text-emerald-500" />
+                  <CardTitle className="text-lg md:text-2xl text-foreground">
+                    Data Table
+                  </CardTitle>
+                </div>
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <Info className="h-4 w-4" />
+                  <span>Click on a row to view more details</span>
+                </div>
+                {searchTerm && (
+                  <Badge className="md:self-start mt-2 md:mt-0">
+                    {searchTerm}
+                  </Badge>
+                )}
+              </div>
+            </CardHeader>
 
-            
             <CardContent className="p-0">
               <div className="h-80 md:h-96 overflow-auto">
                 <Table>

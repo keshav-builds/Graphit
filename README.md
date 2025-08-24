@@ -8,10 +8,10 @@ A modern, responsive web application built with **Next.js 14**, **React**, and *
 ## 🎥 Demo
 
 ### Screenshot 1: Data Visualization Dashboard  
-![Data Visualization Dashboard](public/graphit1.png)
+![Data Visualization Dashboard](public/Readme-Img/graphit1.png)
 
 ### Screenshot 2: Interactive Table View  
-![Interactive Table View](public/graphit2.png)
+![Interactive Table View](public/Readme-Img/graphit2.png)
 
 
 
