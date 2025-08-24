@@ -59,7 +59,7 @@ Graphit/
 │   └── page.tsx           # Main application page
 ├── components/
 │   ├── ui/                # Shadcn/ui components
-│   ├── data-explorer.tsx  # Main data visualization component
+│   ├── data-explorer      # Main data visualization component
 │   ├── theme-provider.tsx # Theme context provider
 │   └── theme-toggle.tsx   # Theme switching component
 ├── public/                # Static assets
@@ -101,7 +101,7 @@ Graphit/
 - Flexible schema handling
 
 ### **Example Data Structure**
-\`\`\`json
+```json
 [
   {
     "title": "Movie Name",
@@ -112,13 +112,13 @@ Graphit/
     "collection_cr": 2023
   }
 ]
-\`\`\`
+```
 
 ## 🎨 Theme Customization
 
 The application supports extensive theme customization through CSS variables:
 
-\`\`\`css
+```css
 :root {
   --background: 250 250 250;    /* Light mode background */
   --foreground: 35 38 47;       /* Light mode text */
@@ -132,26 +132,26 @@ The application supports extensive theme customization through CSS variables:
   --foreground: 250 250 250;    /* Dark mode text */
   /* ... dark mode overrides */
 }
-\`\`\`
+```
 
 ## 🔧 Configuration
 
 ### **Chart Colors**
 Customize the chart color palette in \`components/data-explorer.tsx\`:
 
-\`\`\`typescript
+```typescript
 const CHART_COLORS = [
   "#6366F1", // Indigo
   "#10B981", // Emerald
   "#F59E0B", // Amber
   // Add more colors...
 ]
-\`\`\`
+```
 
 ### **Sample Datasets**
 Add new sample datasets by extending the \`SAMPLE_DATASETS\` array:
 
-\`\`\`typescript
+```json
 const SAMPLE_DATASETS = [
   {
     name: "Your Dataset",
@@ -160,7 +160,7 @@ const SAMPLE_DATASETS = [
     icon: YourIcon,
   }
 ]
-\`\`\`
+```
 
 ## 📱 Responsive Design
 
