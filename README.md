@@ -149,18 +149,8 @@ const CHART_COLORS = [
 ```
 
 ### **Sample Datasets**
-Add new sample datasets by extending the \`SAMPLE_DATASETS\` array:
+Add new sample datasets by updating the /public/datasets 
 
-```json
-const SAMPLE_DATASETS = [
-  {
-    name: "Your Dataset",
-    data: YOUR_DATA_ARRAY,
-    description: "Description of your dataset",
-    icon: YourIcon,
-  }
-]
-```
 
 ## 📱 Responsive Design
 
